@@ -105,9 +105,15 @@ export function define (obj, key, val, enumerable) {
  */
 
 export function augment (target, proto) { //TODO:
-    if ('__proto__' in {}) {
-        target.__proto__ = proto
-    } else {
-        deepMixin.apply(target, arguments)
-    }
+  if ('__proto__' in {}) {
+    target.__proto__ = proto
+  } else {
+    deepMixin(target, proto)
+  }
+}
+
+export function extend (to, from) {
+  for (var key in from) {
+    to[key] = from[key]
+  }
 }

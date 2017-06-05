@@ -1,0 +1,34 @@
+{
+  "name": "yue",
+  "version": "1.0.0",
+  "description": "MVVM",
+  "main": "src/index.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "babel-core": "^6.13.1",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-runtime": "^6.12.0",
+    "babel-preset-es2015": "^6.13.1",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-stage-2": "^6.13.0",
+    "babel-runtime": "^6.11.6",
+    "eslint": "^3.19.0",
+    "eslint-loader": "^1.5.0",
+    "webpack": "^2.6.1",
+    "copy-webpack-plugin": "^3.0.1"
+  },
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hunkid/Yue.git"
+  },
+  "author": "Seant",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hunkid/Yue/issues"
+  },
+  "homepage": "https://github.com/hunkid/Yue#readme"
+}

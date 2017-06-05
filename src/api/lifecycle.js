@@ -1,0 +1,8 @@
+/**
+ * Create by Seant
+ *  17/6/5
+ */
+
+export function $mount() {
+  this._compile()
+}
