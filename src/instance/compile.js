@@ -11,14 +11,17 @@
  */
 
 export function _compile() {
-  if (this._blockNodes) { // _blockNodes指？
-    this._blockNodes.forEach(this._compileNode, this)
-  } else {
-    this._compileNode(this.$el)
-  }
+  this.fragment = document.createDocumentFragment()
+  this._compileNode(this.$template)
+  this.$el.innerHTML = ''
+  this.fragment.childNodes.forEach((child) => {
+    this.$el.appendChild(child.cloneNode(true))
+  })
 }
 
 export function _compileElement(node) {
+  this.currentNode = document.createElement(node.tagName)
+  this.fragment.appendChild(this.currentNode)
   if (node.hasChildNodes()) {
     Array.from(node.childNodes).forEach(this._compileNode, this)
   }
@@ -39,11 +42,10 @@ export function _compileTextNode(node) {
     }
     nodeValue = nodeValue.replace(val, newV)
   }, this)
-  node.nodeValue = nodeValue
+  this.currentNode.appendChild(document.createTextNode(nodeValue))
 }
 
-export function _compileComment(node) {
-}
+export function _compileComment(node) {}
 
 export function _compileNode(node) {
   switch (node.nodeType) {

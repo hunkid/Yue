@@ -3,8 +3,8 @@
  *  2017.6.2
  */
 
-import objectAgumentations from './object-augmentations'
-import _ from '../util'
+import objectAugmentations from './object-augmentations'
+import * as _ from '../util'
 
 const ARRAY = 0
 const OBJECT = 1
@@ -68,7 +68,7 @@ Observer.prototype.observe = function (key, val) {
 /**
  * 将一个属性转变成getter/setter，这样可触发事件
  */
-Observer, prototype.convert = function (key, val) {
+Observer.prototype.convert = function (key, val) {
   var prefix = key.charAt(0)
   if (prefix === '_' || prefix === '$') {
     return
@@ -84,9 +84,11 @@ Observer, prototype.convert = function (key, val) {
       return val
     },
     set: function (newVal) {
-      if (newVal === val) return;
-      val = newVal;
-      ob.notify('set', key, newVal);
+      if (newVal === val) return
+      val = newVal
+      console.log(`你设置了新的${key}为${val}`)
+      ob.notify(`set:${key}`, key, newVal)
+      ob.notify('set', key, newVal)
     }
   })
 }
@@ -98,14 +100,13 @@ Observer, prototype.convert = function (key, val) {
  * @returns {Observer} 观察者对象
  */
 Observer.prototype.on = function (event, fn) {
-  this._cbs = this._cbs || {};
+  this._cbs = this._cbs || {}
   if (!this._cbs[event]) {
-    this._cbs[event] = [];
+    this._cbs[event] = []
   }
-  this._cbs[event].push(fn);
-  // 这里return this是为了实现.on(...).on(...)这样的级联调用
-  return this;
-};
+  this._cbs[event].push(fn)
+  return this
+}
 
 
 /**
@@ -115,38 +116,39 @@ Observer.prototype.on = function (event, fn) {
  * @returns {Observer} 观察者对象
  */
 Observer.prototype.off = function (event, fn) {
-  this._cbs = this._cbs || {};
+  this._cbs = this._cbs || {}
 
   // 取消所有订阅事件
   if (!arguments.length) {
-    this._cbs = {};
-    return this;
+    this._cbs = {}
+    return this
   }
 
-  let callbacks = this._cbs[event];
-  if (!callbacks) return this;
+  let callbacks = this._cbs[event]
+  if (!callbacks) return this
 
   // 取消特定事件
   if (arguments.length === 1) {
-    delete this._cbs[event];
-    return this;
+    delete this._cbs[event]
+    return this
   }
 
   // 取消特定事件的特定回调函数
   for (let i = 0, cb; i < callbacks.length; i++) {
-    cb = callbacks[i];
+    cb = callbacks[i]
     if (cb === fn) {
-      callbacks.splice(i, 1);
-      break;
+      callbacks.splice(i, 1)
+      break
     }
   }
-  return this;
-};
+  return this
+}
 
 /**
  * 触发事件，逐级通知父级
  */
 Observer.prototype.notify = function (event, path, val) {
+  console.log(`event${event}`)
   this.emit(event, path, val)
   if (!this.parents) return
   var parent = this.parent
@@ -155,21 +157,21 @@ Observer.prototype.notify = function (event, path, val) {
   var parentPath
   // 此处为为了兼容数组的情况 TODO:
   if (path) {
-    parentPath = `${key}.${path}`;
+    parentPath = `${key}.${path}`
   } else {
-    parentPath = key;
+    parentPath = key
   }
-  ob.notify(event, parentPath, val);
+  ob.notify(event, parentPath, val)
 }
 
 Observer.prototype.emit = function (event, path, val) {
-  this._cbs = this._cbs || {}; //这样的私有属性，其实提前定义类中更加清晰
-  let callbacks = this._cbs[event];
-  if (!callbacks) return;
-  callbacks = callbacks.slice(0);
+  this._cbs = this._cbs || {} //这样的私有属性，其实提前定义类中更加清晰
+  let callbacks = this._cbs[event]
+  if (!callbacks) return
+  callbacks = callbacks.slice(0)
   callbacks.forEach((cb, i) => {
-    callbacks[i].apply(this, arguments); //运用arguments的意义？
-  });
+    cb.apply(this, arguments) //运用arguments的意义？
+  })
 }
 
 /**

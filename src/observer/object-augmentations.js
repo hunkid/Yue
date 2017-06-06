@@ -1,8 +1,8 @@
 import * as _ from '../util'
 
-var objectAgumentations = {}
+var objectAugmentations = {}
 
-_.define(objectAgumentations, '$add', function (key, val) {
+_.define(objectAugmentations, '$add', function (key, val) {
   if (this.hasOwnProperty(key)) return
   _.define(this, key, val, true)
   var ob = this.$observer
@@ -11,10 +11,10 @@ _.define(objectAgumentations, '$add', function (key, val) {
   ob.notify('add', key, val)
 })
 
-_.define(objectAgumentations, '$delete', function (key) {
+_.define(objectAugmentations, '$delete', function (key) {
   if (!this.hasOwnProperty(key)) return
   delete this[key]
   this.$observer.notify('deleted', key)
 })
 
-export default objectAgumentations
+export default objectAugmentations

@@ -1,6 +1,7 @@
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var path = require('path')
 module.exports = {
+  devtool: 'source-map',
   entry: {
     index: './src/index.js',
     example: './example/index.js'
