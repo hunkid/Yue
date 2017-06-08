@@ -10,21 +10,34 @@
  * during an instance's entire lifecycle.
  */
 
+var fragment, currentNodeList = []
+
 export function _compile() {
-  this.fragment = document.createDocumentFragment()
+  fragment = document.createDocumentFragment()
+  currentNodeList.push(fragment)
   this._compileNode(this.$template)
-  this.$el.innerHTML = ''
-  this.fragment.childNodes.forEach((child) => {
-    this.$el.appendChild(child.cloneNode(true))
-  })
+  this.$el.parentNode.replaceChild(fragment, this.$el)
+  this.$el = document.querySelector(this.$options.el)
 }
 
 export function _compileElement(node) {
-  this.currentNode = document.createElement(node.tagName)
-  this.fragment.appendChild(this.currentNode)
+  var newNode = document.createElement(node.tagName)
+
+  if (node.hasAttributes()) {
+    var attrs = node.attributes
+    Array.from(attrs).forEach((attr) => {
+      newNode.setAttribute(attr.name, attr.value)
+    })
+  }
+
+  currentNodeList[currentNodeList.length - 1].appendChild(newNode)
+  
   if (node.hasChildNodes()) {
+    currentNodeList.push(newNode)
     Array.from(node.childNodes).forEach(this._compileNode, this)
   }
+
+  currentNodeList.pop()
 }
 
 export function _compileTextNode(node) {
@@ -42,7 +55,7 @@ export function _compileTextNode(node) {
     }
     nodeValue = nodeValue.replace(val, newV)
   }, this)
-  this.currentNode.appendChild(document.createTextNode(nodeValue))
+  currentNodeList[currentNodeList.length - 1].appendChild(document.createTextNode(nodeValue))
 }
 
 export function _compileComment(node) {}
