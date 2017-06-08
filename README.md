@@ -6,4 +6,5 @@
 
 # 进展
 - [x] 简单的数据绑定(data binding)
-- [ ] 通过观察者模式实现watcher
+- [x] 简单的模板渲染
+- [x] 通过观察者模式实现watcher

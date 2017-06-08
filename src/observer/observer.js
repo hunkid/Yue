@@ -4,6 +4,7 @@
  */
 
 import objectAugmentations from './object-augmentations'
+import arrayAugmentations from './array-augmentations'
 import * as _ from '../util'
 
 const ARRAY = 0
@@ -22,13 +23,9 @@ export default function Observer(value, type) {
   if (value) {
     _.define(value, '$observer', this)
     if (type === ARRAY) {
-      //TODO:
+      _.augment(value, arrayAugmentations)
+      this.link(value)
     } else if (type === OBJECT) {
-      // if ('__ob__' in {}) {
-      //   value.__proto__ = objectAgumentations
-      // } else {
-      //   _.deepMixin(value, objectAugmentations)
-      // }
       _.augment(value, objectAugmentations)
       this.walk(value)
     }
@@ -49,6 +46,13 @@ Observer.prototype.walk = function (obj) {
       this.convert(key, val)
     }
   }
+}
+/**
+ * 为了观察数组中的元素为对象的情况
+ * @param {Array} item
+ */
+Observer.prototype.link = function (item) {
+  item.forEach((i) => this.observe(i))
 }
 /**
  * 创建一个观察者 TODO:

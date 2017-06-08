@@ -9,7 +9,8 @@ const app = new Yue({
     address: {
       city: '南京',
       country: '中国'
-    }
+    },
+    favoriteFruit: ['西瓜','香蕉']
   }
 })
 
