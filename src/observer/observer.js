@@ -51,8 +51,10 @@ Observer.prototype.walk = function (obj) {
  * 为了观察数组中的元素为对象的情况
  * @param {Array} item
  */
-Observer.prototype.link = function (item) {
-  item.forEach((i) => this.observe(i))
+Observer.prototype.link = function (items) {
+  items.forEach((val, i) => {
+    this.observe(i, val)
+  })
 }
 /**
  * 创建一个观察者 TODO:
@@ -90,7 +92,6 @@ Observer.prototype.convert = function (key, val) {
     set: function (newVal) {
       if (newVal === val) return
       val = newVal
-      console.log(`你设置了新的${key}为${val}`)
       ob.notify(`set:${key}`, key, newVal)
       ob.notify('set', key, newVal)
     }
@@ -173,8 +174,8 @@ Observer.prototype.emit = function (event, path, val) {
   let callbacks = this._cbs[event]
   if (!callbacks) return
   callbacks = callbacks.slice(0)
-  callbacks.forEach((cb, i) => {
-    cb.apply(this, arguments) //运用arguments的意义？
+  callbacks.forEach((cb) => {
+    cb.apply(this, arguments)
   })
 }
 

@@ -9,6 +9,7 @@ import * as lifecycle from './api/lifecycle'
 import * as compile from './instance/compile'
 import {$watch} from './api/data'
 import Observer from './observer/observer'
+import {_updateBindingAt} from './instance/bingding'
 export default function Yue (options) {
   this._init(options)
 }
@@ -17,7 +18,8 @@ Yue.prototype = {
   constructor: Yue,
   _init,
   $watch,
-  observer: Observer
+  observer: Observer,
+  _updateBindingAt
 }
 
 extend(Yue.prototype, lifecycle)
