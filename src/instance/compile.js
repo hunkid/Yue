@@ -10,14 +10,13 @@
  * during an instance's entire lifecycle.
  */
 import Directive from '../directive'
+import * as textParser from '../parse/text'
+import * as dirParser from '../parse/directive'
+import * as _ from '../util'
+
 var fragment, currentNodeList = []
 
 export function _compile() {
-  // fragment = document.createDocumentFragment()
-  // currentNodeList.push(fragment)
-  // this._compileNode(this.$template)
-  // this.$el.parentNode.replaceChild(fragment, this.$el)
-  // this.$el = document.querySelector(this.$options.el)
   this._compileNode(this.$el)
 }
 
@@ -31,22 +30,24 @@ export function _compileElement(node) {
 }
 
 export function _compileTextNode(node) {
-  var nodeValue = node.nodeValue
-  if (nodeValue === '') return
-  var pat = /{{\w+(.\w+)*}}/g
-  var ret = nodeValue.match(pat)
-  if (!ret) return
-  ret.forEach((expression) => {
-    let newDom = document.createTextNode('')
-    node.parentNode.insertBefore(newDom, node)
+  let tokens = textParser.parse(node.nodeValue)
+  if (!tokens) return
 
-    let property = expression.replace(/[{}]/g, '') // 去除{}
-    // let props = property.split('.')
-    this._bindDirective('text', newDom, property)
+  tokens.forEach((token) => {
+    if (token.tag) {
+      // 指令节点
+      let value = token.value
+      let el = document.createTextNode('')
+      _.before(el, node)
+      this._bindDirective('text', value, el)
+    } else {
+      // 普通文本节点
+      let el = document.createTextNode(token.value)
+      _.before(el, node)
+    }
+  })
 
-  }, this)
-  
-  node.parentNode.removeChild(node)
+  _.remove(node)
 }
 
 export function _compileComment(node) {}
@@ -67,8 +68,12 @@ export function _compileNode(node) {
   }
 }
 
-export function _bindDirective(name, node, expression) {
-  this._directives.push(
-    new Directive(name, node, this, expression)
-  )
+export function _bindDirective(name, value, node) {
+  let descriptors = dirParser.parse(value)
+  let dirs = this._directives
+  descriptors.forEach((descriptor) => {
+    dirs.push(
+      new Directive(name, node, this, descriptor)
+    )
+  })
 }

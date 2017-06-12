@@ -3,7 +3,7 @@
  *  17/6/5
  */
 
-export function $mount() {
-  console.log('开始渲染')
+export function $mount(el) {
+  this._initElement(el)
   this._compile()
 }

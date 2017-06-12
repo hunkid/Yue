@@ -1,20 +1,19 @@
 /**
  * 初始化Yue实例
  */
-export default function _init (options) {
+import * as _ from '../util'
+
+export function _init (options) {
   options = options || {}
-  
   this.$options = options
-  this.$data = options.data
-  this.$el = document.querySelector(options.el)
-  this.$template = this.$el.cloneNode(true)
+  _.extend(this.$options, this.constructor.options)
+  this.$data = options.data || {}
+  this._initData(this.$data)
+  this._initBindings()
 
   this._directives = []
 
-  this.observer = this.observer.create(this.$data)
-  this.observer.on('set', this._updateBindingAt.bind(this))
-
   if (options.el) {
-    this.$mount()
+    this.$mount(options.el)
   }
 }
