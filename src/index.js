@@ -13,7 +13,7 @@ import * as scope from './instance/scope'
 import * as element from './instance/element'
 
 import Observer from './observer/observer'
-import Directive from './directive'
+import * as directives from './directives'
 
 export default function Yue (options) {
   this._init(options)
@@ -25,7 +25,7 @@ Yue.prototype = {
 }
 
 Yue.options = {
-  directives: Directive
+  directives: directives['default']
 }
 
 extend(Yue.prototype, _init)

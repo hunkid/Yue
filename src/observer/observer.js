@@ -10,6 +10,7 @@ import * as _ from '../util'
 const ARRAY = 0
 const OBJECT = 1
 
+let uid = 0
 /**
  * Observer构造函数
  * @constructor
@@ -19,7 +20,7 @@ const OBJECT = 1
 
 export default function Observer(value, type) {
   this.value = value
-  this.type = type
+  this.id = ++uid
   if (value) {
     _.define(value, '$observer', this)
     if (type === ARRAY) {
@@ -31,11 +32,6 @@ export default function Observer(value, type) {
     }
   }
 }
-
-/**
- * get事件触发的全局控制开关
- */
-Observer.emitGet = false
 
 Observer.prototype.walk = function (obj) {
   var key, val
@@ -56,14 +52,10 @@ Observer.prototype.link = function (items) {
     this.observe(i, val)
   })
 }
-/**
- * 创建一个观察者 TODO:
- * 为什么要将ob的父用例
- */
+
 Observer.prototype.observe = function (key, val) {
   var ob = Observer.create(val)
   if (ob) {
-    // TODO:
     ob.parent = {
       ob: this,
       key: key
@@ -84,13 +76,11 @@ Observer.prototype.convert = function (key, val) {
     enumerable: true,
     configurable: true,
     get: function () {
-      if (Observer.emitGet) {
-        ob.notify('get', key)
-      }
       return val
     },
     set: function (newVal) {
-      if (newVal === val) return
+      if (newVal === val)
+        return
       val = newVal
       ob.notify(`set:${key}`, key, newVal)
       ob.notify('set', key, newVal)
@@ -153,14 +143,12 @@ Observer.prototype.off = function (event, fn) {
  * 触发事件，逐级通知父级
  */
 Observer.prototype.notify = function (event, path, val) {
-  console.log(`event${event}`)
   this.emit(event, path, val)
-  if (!this.parents) return
+  if (!this.parent) return
   var parent = this.parent
   var ob = parent.ob
   var key = parent.key
   var parentPath
-  // 此处为为了兼容数组的情况 TODO:
   if (path) {
     parentPath = `${key}.${path}`
   } else {

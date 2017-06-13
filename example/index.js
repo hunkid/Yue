@@ -6,11 +6,6 @@ const app = new Yue({
   data: {
     name: 'Seant',
     age: 26,
-    address: {
-      city: '南京',
-      country: '中国'
-    },
-    favoriteFruit: ['西瓜','香蕉'],
     user: {
       name: 'Seant',
       age: 26

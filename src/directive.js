@@ -22,8 +22,14 @@ function Directive(name, tDom, vm, descriptor) {
 }
 
 Directive.prototype._update = function () {
-  this.tDom[this.attr] = this.vm.$data[this.expression]
-  console.log(`更新了DOM-${this.expression}`)
+  // var _exp = this.expression.split('.')
+  // var _m
+  // _exp.forEach((key) => {
+  //   _m = this.vm.$data[key]
+  // })
+  // this.tDom[this.attr] = _m
+  // console.log(`更新了DOM-${this.expression}`)
+  this.update()
 }
 
 /**
@@ -37,7 +43,8 @@ Directive.prototype._bind = function () {
     this._update,
     this
   )
-  this._update()
+  // this._update()
+  this.update()
 }
 
 /**
