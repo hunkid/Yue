@@ -1,3 +1,4 @@
+import {Batcher} from './batcher'
 /**
  * Watcher构造函数
  * 1. 当指令对应的数据发生改变的时候, 执行更新DOM的update函数
@@ -41,7 +42,13 @@ Watcher.prototype.addDep = function (path) {
  * 就是这么的。。复杂。。
  */
 Watcher.prototype.update = function () {
-  this.cb.call(this.ctx, arguments)
+  batcher.push(this)
 }
 
+/**
+ * 用于batcher批处理更新
+ */
+Watcher.prototype.run = function () {
+  this.cb.call(this.ctx, arguments)
+}
 export default Watcher
