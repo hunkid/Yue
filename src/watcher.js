@@ -39,7 +39,6 @@ Watcher.prototype.addDep = function (path) {
  * 那么就是directive的_update方法。
  * 那么directive的_update方法是什么呢?
  * 其实就是各自对应的更新方法。比如对应文本节点来说, 就是更新nodeValue的值
- * 就是这么的。。复杂。。
  */
 Watcher.prototype.update = function () {
   batcher.push(this)

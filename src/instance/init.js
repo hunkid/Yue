@@ -9,6 +9,7 @@ export function _init (options) {
   _.extend(this.$options, this.constructor.options)
   this.$data = options.data || {}
   this._initData(this.$data)
+  this._initComputed()
   this._initBindings()
 
   this._directives = []

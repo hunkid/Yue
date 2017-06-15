@@ -10,6 +10,11 @@ const app = new Yue({
       name: 'Seant',
       age: 26
     }
+  },
+  computed: {
+    info () {
+      return `得到了${this.user.name}和${this.user.age}`
+    }
   }
 })
 
