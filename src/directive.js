@@ -52,8 +52,6 @@ Directive.prototype._bind = function () {
  */
 Directive.prototype._initDef = function () { // TODO:
   let def = this.vm.$options.directives[this.name]
-  //
-  console.log('def:', def)
   _.extend(this, def)
 }
 

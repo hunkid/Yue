@@ -11,13 +11,14 @@ const ARRAY = 0
 const OBJECT = 1
 
 let uid = 0
+
+Observer.emitGet = false
 /**
  * Observer构造函数
  * @constructor
  * @param {Array|Object} value
  * @param {Number} type
  */
-
 export default function Observer(value, type) {
   this.value = value
   this.id = ++uid
@@ -76,13 +77,15 @@ Observer.prototype.convert = function (key, val) {
     enumerable: true,
     configurable: true,
     get: function () {
+      if (Observer.emitGet) {
+        ob.notify('get', key)
+      }
       return val
     },
     set: function (newVal) {
       if (newVal === val)
         return
       val = newVal
-      ob.notify(`set:${key}`, key, newVal)
       ob.notify('set', key, newVal)
     }
   })

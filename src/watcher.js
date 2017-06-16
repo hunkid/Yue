@@ -1,4 +1,6 @@
 import {Batcher} from './batcher'
+import {compileGetter} from './parse/expression'
+import Observer from './observer/observer'
 /**
  * Watcher构造函数
  * 1. 当指令对应的数据发生改变的时候, 执行更新DOM的update函数
@@ -14,17 +16,31 @@ function Watcher(vm, expression, cb, ctx) {
   this.expression = expression
   this.cb = cb
   this.ctx = ctx || vm
-  this.addDep(expression)
+  this.deps = Object.create(null)
+  this.getter = compileGetter(expression)
+  this.initDeps(expression)
+}
+
+Watcher.prototype.initDeps = function (path) {
+  this.addDep(path)
+  Observer.emitGet = true
+  this.vm._activeWatcher = this
+  this.value = this.getter.call(this.vm, this.vm.$data)
+  Observer.emitGet = false
+  this.vm._activeWatcher = null
 }
 
 /**
- * 根据给出的路径, 去创建binding对象,
+ * 根据给出的路径, 去获取或创建binding对象,
  * 然后把当前的watcher对象添加到创建的binding对象上
  * @param path {string} 指令表达式对应的路径, 例如"user.name"
  */
 Watcher.prototype.addDep = function (path) {
   let vm = this.vm
-  let binding = vm._createBindingAt(path)
+  let deps = this.deps
+  if (deps[path]) return
+  deps[path] = true
+  let binding = vm._getBindingAt(path) || vm._createBindingAt(path)
   binding._addSub(this)
 }
 
