@@ -2,7 +2,7 @@
 模仿Vue的简易MVVM
 
 # 参考来源及感谢
-[Vue官方仓库] (https://github.com/vuejs)
+[Vue官方仓库](https://github.com/vuejs)    
 [梁少峰的Bue仓库](https://github.com/youngwind/bue)
 
 # 进展
