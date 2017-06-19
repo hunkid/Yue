@@ -39,7 +39,7 @@ export function _compileTextNode(node) {
       let value = token.value
       let el = document.createTextNode('')
       _.before(el, node)
-      this._bindDirective('text', value, el)
+      this._bindDirective('text', value, el) // 这里便是将指令节点和其对应的value值联系起来，如value:usr.name
     } else {
       // 普通文本节点
       let el = document.createTextNode(token.value)

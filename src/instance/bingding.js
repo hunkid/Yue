@@ -16,7 +16,7 @@ export function _updateBindingAt() {
 
 export function _initBindings() {
   this._rootBinding = new Binding()
-  this.observer.on('set', this._updateBindingAt.bind(this))
+  this.observer.on('set', this._updateBindingAt.bind(this)) // 在顶层注册set事件
                .on('get', this._collectDep.bind(this))
 }
 
