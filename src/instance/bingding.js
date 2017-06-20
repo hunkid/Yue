@@ -8,6 +8,7 @@ export function _updateBindingAt() {
   pathAry.forEach((key) => {
     r = r[key]
   })
+  if (!r) return
   let subs = r._subs
   subs.forEach((watcher) => {
     watcher.cb.call(watcher.ctx)

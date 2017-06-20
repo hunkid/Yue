@@ -10,6 +10,12 @@
     <p>姓名: {{user.name}}</p>
     <p>年龄: {{user.age}}</p>
     <p>{{info}}</p>
+    <div y-if="show">
+        <p>你说show我就show {{user.name}}</p>
+    </div>
+    <!--<div y-if="!show">
+        <p>你说show我就不show</p>
+    </div>-->
 </div>
 
 <script src="./example.js"></script>

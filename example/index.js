@@ -4,6 +4,7 @@ import Yue from '../src/index'
 const app = new Yue({
   el: '#app',
   data: {
+    show: true,
     name: 'Seant',
     age: 26,
     user: {

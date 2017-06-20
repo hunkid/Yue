@@ -23,11 +23,24 @@ function Watcher(vm, expression, cb, ctx) {
 
 Watcher.prototype.initDeps = function (path) {
   this.addDep(path)
+  this.value = this.get()
+}
+
+Watcher.prototype.beforeGet = function () {
   Observer.emitGet = true
   this.vm._activeWatcher = this
-  this.value = this.getter.call(this.vm, this.vm.$data)
-  Observer.emitGet = false
+}
+
+Watcher.prototype.afterGet = function () {
   this.vm._activeWatcher = null
+  Observer.emitGet = false
+}
+
+Watcher.prototype.get = function () {
+  this.beforeGet()
+  let value = this.getter.call(this.vm, this.vm.$data)
+  this.afterGet()
+  return value
 }
 
 /**

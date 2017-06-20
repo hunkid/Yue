@@ -22,14 +22,7 @@ function Directive(name, tDom, vm, descriptor) {
 }
 
 Directive.prototype._update = function () {
-  // var _exp = this.expression.split('.')
-  // var _m
-  // _exp.forEach((key) => {
-  //   _m = this.vm.$data[key]
-  // })
-  // this.tDom[this.attr] = _m
-  // console.log(`更新了DOM-${this.expression}`)
-  this.update()
+  this.update(this._watcher.get())  // 这地方并没有采用this._watcher.value，原因在于value值并不是动态变化的
 }
 
 /**
@@ -37,14 +30,17 @@ Directive.prototype._update = function () {
  */
 Directive.prototype._bind = function () {
   if (!this.expression) return
+
+  this.bind && this.bind()
+
   this._watcher = new Watcher(
     this.vm,
     this.expression,
     this._update,
     this
   )
-  // this._update()
-  this.update()
+  
+  this.update(this._watcher.value) // 注意
 }
 
 /**

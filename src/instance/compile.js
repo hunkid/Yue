@@ -16,11 +16,21 @@ import * as _ from '../util'
 
 var fragment, currentNodeList = []
 
+const priorityDirs = [
+  'if'
+]
+
 export function _compile() {
   this._compileNode(this.$el)
 }
 
 export function _compileElement(node) {
+  let hasAttributes = node.hasAttributes()
+  
+  if (hasAttributes && this._checkPriorityDirs(node)) {
+    return
+  }
+
   if (node.hasChildNodes()) {
     Array.from(node.childNodes).forEach(
       (cnode) => {
@@ -76,4 +86,20 @@ export function _bindDirective(name, value, node) {
       new Directive(name, node, this, descriptor)
     )
   })
+}
+
+/**
+ * 检测node节点是否包含"v-if"这样的高优先级指令
+ * 若，包含则不遍历，直接指令绑定
+ * @param {HTML Elment} node 
+ */
+export function _checkPriorityDirs(node) {
+  for (let i = 0, length = priorityDirs.length; i < length; i++) {
+    let dir = priorityDirs[i]
+    let value = _.attr(node, dir)
+    if (value) {
+      this._bindDirective(dir, value, node)
+      return true
+    }
+  }
 }
