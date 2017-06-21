@@ -17,7 +17,8 @@ import * as _ from '../util'
 var fragment, currentNodeList = []
 
 const priorityDirs = [
-  'if'
+  'if',
+  'repeat'
 ]
 
 export function _compile() {

@@ -9,8 +9,20 @@
  */
 export function parse(s) {
   let dirs = []
-  dirs.push({
-    expression: s
-  })
+  if (s.indexOf(':') !== -1) {
+    // 属性指令 data-id:user.id
+    let ss = s.split(':')
+    dirs.push({
+      raw: s,
+      arg: ss[0],
+      expression: ss[1]
+    })
+  } else {
+    // 文本指令  user.name
+    dirs.push({
+      raw: s,
+      expression: s
+    })
+  }
   return dirs
 }

@@ -15,7 +15,7 @@ export default {
     this.ref = document.createComment(`${config.prefix}-if`)
     _.after(this.ref, tDom)
     _.remove(tDom)
-    this.inserted = false // 注意这个this与vue源码中this应该是有区别的
+    this.inserted = false
   },
   /**
    * @param {Boolean} value 

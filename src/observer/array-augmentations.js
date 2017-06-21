@@ -16,8 +16,20 @@ var arrayAugmentations = Object.create(Array.prototype)
 ].forEach((method) => {
   var original = Array.prototype[method]
   arrayAugmentations[method] = function() {
-    console.log('这个数组被改变')
-    return original.apply(this, arguments)
+    let result = original.apply(this, arguments)
+    let ob = this.$observer
+    var removed, inserted, index
+    switch (method) {
+    case 'push':
+      break
+    case 'pop':
+      removed = [result]
+      index = this.length
+      break
+    default:
+      return
+    }
+    ob,notify('set', null, this.length)
   }
 })
 

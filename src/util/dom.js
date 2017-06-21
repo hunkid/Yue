@@ -31,3 +31,9 @@ export function attr(node, attr) {
   }
   return val
 }
+
+export function replace(oldN, newN) {
+  let parent = oldN.parentNode
+  parent.insertBefore(newN, oldN)
+  parent.removeChild(oldN)
+}
