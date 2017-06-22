@@ -15,10 +15,10 @@ function Directive(name, tDom, vm, descriptor) {
   this.tDom = tDom
   this.vm = vm
   this.expression = descriptor.expression
-  this.attr = 'nodeValue'
+  // this.attr = 'nodeValue'
+  this.arg = descriptor.arg
   this._initDef()
   this._bind()
-  // this.update()
 }
 
 Directive.prototype._update = function () {

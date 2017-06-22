@@ -13,6 +13,7 @@ import Directive from '../directive'
 import * as textParser from '../parse/text'
 import * as dirParser from '../parse/directive'
 import * as _ from '../util'
+import config from '../config'
 
 var fragment, currentNodeList = []
 
@@ -30,6 +31,10 @@ export function _compileElement(node) {
   
   if (hasAttributes && this._checkPriorityDirs(node)) {
     return
+  }
+
+  if(hasAttributes) {
+    this._compileAttrs(node)
   }
 
   if (node.hasChildNodes()) {
@@ -88,6 +93,42 @@ export function _bindDirective(name, value, node) {
     )
   })
 }
+
+/**
+ * 循环解析属性(包括特殊属性和普通属性)
+ * @param {HTML Element} node
+ * @private
+ */
+export function _compileAttrs(node) {
+  let attrs = Array.from(node.attributes)
+  let registry = this.$options.directives
+  attrs.forEach((attr) => {
+    let attrName = attr.name
+    let attrValue = attr.value
+    if (attrName.indexOf(config.prefix) === 0) {
+      // 特殊属性 如: v-on:"submit"
+      let dirName = attrName.slice(config.prefix.length)
+      if (!registry[dirName]) return
+      this._bindDirective(dirName, attrValue, node)
+    } else {
+      // 普通属性 如: data-id="{{user.id}}"
+      this._bindAttr(node, attr)
+    }
+  })
+}
+
+/**
+ * @param node {Element}
+ * @param attr {Object} 如 {name:"data-id", id:"app"}
+ * @private
+ */
+export function _bindAttr(node, attr) {
+  let {name, value} = attr
+  let tokens = textParser.parse(value)
+  if (!tokens) return
+  this._bindDirective('attr', `${name}:${tokens[0].value}`, node)
+}
+
 
 /**
  * 检测node节点是否包含"v-if"这样的高优先级指令

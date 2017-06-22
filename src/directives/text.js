@@ -4,6 +4,6 @@ export function update () {
   properties.forEach((property) => {
     value = value[property]
   })
-  this.tDom[this.attr] = value
+  this.tDom['nodeValue'] = value
   console.log(`更新了DOM-${this.expression}`, value)
 }

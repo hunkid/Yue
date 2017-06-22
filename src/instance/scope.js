@@ -1,14 +1,15 @@
 import Observer from '../observer/observer'
-
+import * as _ from '../util'
 /**
  * @param {Object} data VM.$data
  */
-export function _initData(data) {
+export function _initData (data) {
   this.observer = Observer.create(data)
 }
 
 function noop() {}
-export function _initComputed() {
+
+export function _initComputed () {
   var computed = this.$options.computed
   if (computed) {
     for (var key in computed) {
@@ -23,5 +24,20 @@ export function _initComputed() {
         Object.defineProperty(this.$data, key, def)
       }
     }
+  }
+}
+
+export function _initMethods () {
+  var methods = this.$options
+  if (methods) {
+    for (let key in methods) {
+      this[key] = methods[key]
+    }
+  }
+}
+
+export function _initProxy () {
+  for (let key in this.$data) {
+    _.proxy(this, this.$data, key)
   }
 }

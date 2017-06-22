@@ -2,7 +2,18 @@
 import Binding from '../binding'
 
 export function _updateBindingAt() {
-  let path = arguments[1]
+  
+  this._updateSelfBindingAt(...arguments)
+  // this._updateChildrenBindingAt(...arguments)
+}
+
+export function _initBindings() {
+  this._rootBinding = new Binding()
+  this.observer.on('set', this._updateBindingAt.bind(this)) // 在顶层注册set事件
+               .on('get', this._collectDep.bind(this))
+}
+
+export function _updateSelfBindingAt (event, path) {
   let pathAry = path.split('.')
   let r = this._rootBinding
   pathAry.forEach((key) => {
@@ -15,10 +26,14 @@ export function _updateBindingAt() {
   })
 }
 
-export function _initBindings() {
-  this._rootBinding = new Binding()
-  this.observer.on('set', this._updateBindingAt.bind(this)) // 在顶层注册set事件
-               .on('get', this._collectDep.bind(this))
+/**
+ * 执行本实例所有子实例发生了数据变动的watcher
+ */
+export function _updateChildrenBindingAt () {
+  if (!this.$children.length) return
+  this.$children.forEach((child) => {
+    child._updateBindingAt(...arguments)
+  })
 }
 
 /**
