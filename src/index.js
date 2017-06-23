@@ -14,6 +14,8 @@ import * as element from './instance/element'
 import * as directives from './directives'
 import * as dom from './api/dom'
 
+import installGlobalAPI from './global-api'
+
 import Observer from './observer/observer'
 export default function Yue (options) {
   this._init(options)
@@ -25,7 +27,8 @@ Yue.prototype = {
 }
 
 Yue.options = {
-  directives: directives['default']
+  directives: directives['default'],
+  components: {}
 }
 
 _.extend(Yue.prototype, _init)
@@ -36,3 +39,5 @@ _.extend(Yue.prototype, dom)
 _.extend(Yue.prototype, bingding)
 _.extend(Yue.prototype, scope)
 _.extend(Yue.prototype, element)
+
+installGlobalAPI(Yue)

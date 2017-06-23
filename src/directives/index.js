@@ -6,14 +6,17 @@ import * as attr from './attr'
 import * as yif from './if'
 import * as repeat from './repeat'
 import * as on from './on'
+import * as component from './component'
 var directives = {
   text,
   attr,
   if: {},
   on: {},
-  repeat: {}
+  repeat: {},
+  component: {}
 }
 _.extend(directives.if, yif.default)
 _.extend(directives.on, on.default)
 _.extend(directives.repeat, repeat.default)
+_.extend(directives.component, component.default)
 export default directives

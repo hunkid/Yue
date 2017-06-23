@@ -8,4 +8,5 @@ export function _initElement(el) {
   } else {
     this.$el = el
   }
+  this.$el.__vue__ = this
 }

@@ -22,7 +22,7 @@ function Directive(name, tDom, vm, descriptor) {
 }
 
 Directive.prototype._update = function () {
-  this.update(this._watcher.get())  // 这地方并没有采用this._watcher.value，原因在于value值并不是动态变化的
+  this.update(this._watcher.get()) // 这地方并没有采用this._watcher.value，原因在于value值并不是动态变化的
 }
 
 /**
@@ -33,14 +33,17 @@ Directive.prototype._bind = function () {
 
   this.bind && this.bind()
 
-  this._watcher = new Watcher(
-    this.vm,
-    this.expression,
-    this._update,
-    this
-  )
-  
-  this.update(this._watcher.value) // 注意
+  if (this.name === 'component') {
+    this.update && this.update()
+  } else {
+    this._watcher = new Watcher(
+      this.vm,
+      this.expression,
+      this._update,
+      this
+    )
+    this.update(this._watcher.value) // 注意
+  }
 }
 
 /**
