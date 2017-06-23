@@ -25,6 +25,10 @@ export function _init(options) {
     this.$data = options.data || {}
   }
 
+  if (options.data) {
+    this.$data = options.data
+  }
+
   this._initData(this.$data)
 
   this._initComputed() // 初始化计算属性

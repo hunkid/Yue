@@ -14,7 +14,7 @@ export default {
     let tDom = this.tDom
     this.ref = document.createComment(`${config.prefix}-if`)
     _.after(this.ref, tDom)
-    _.remove(tDom)
+    // _.remove(tDom)
     this.inserted = false
   },
   /**

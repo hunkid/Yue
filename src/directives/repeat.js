@@ -81,9 +81,14 @@ export default {
     }
   },
   build (data, index) {
+    let alias = this.arg
+    let d = {}
+    if (alias) {
+      d[alias] = data
+    }
     let vm = new Yue({
       el: this.tDom.cloneNode(true),
-      data: data,
+      data: d,
       parent: this.vm
     })
     this.cacheVm(data, vm)
