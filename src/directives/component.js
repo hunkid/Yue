@@ -8,9 +8,9 @@ import config from '../config'
 
 export default {
   bind () {
-    if (!this.el.__vue__) {
+    if (!this.tDom.__vue__) {
       this.anchor = document.createComment(`${config.prefix}component`)
-      _.replace(this.el, this.anchor)
+      _.replace(this.tDom, this.anchor)
       this.setComponent(this.expression)
     }
   },
@@ -24,6 +24,7 @@ export default {
   setComponent (value) {
     if (value) {
       this.Component = this.vm.$options.components[value]
+      this.ComponentName = value
       this.mountComponent()
     }
   },
@@ -38,7 +39,7 @@ export default {
     if (this.Component) {
       let options = {
         name: this.ComponentName,
-        el: this.el.cloneNode(),
+        el: this.tDom.cloneNode(),
         parent: this.vm,
         isComponent: true
       }

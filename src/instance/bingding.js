@@ -4,7 +4,7 @@ import Binding from '../binding'
 export function _updateBindingAt() {
   
   this._updateSelfBindingAt(...arguments)
-  // this._updateChildrenBindingAt(...arguments)
+  this._updateChildrenBindingAt(...arguments)
 }
 
 export function _initBindings() {

@@ -41,3 +41,15 @@ export function _initProxy () {
     _.proxy(this, this.$data, key)
   }
 }
+
+export function _initProps () {
+  let isComponent = this.$options.isComponent
+  if (!isComponent) return
+  let el = this.$options.el
+  let attrs = Array.from(el.attributes)
+  attrs.forEach((attr) => {
+    let attrName = attr.name
+    let attrValue = attr.value
+    this.$data[attrName] = attrValue
+  })
+}

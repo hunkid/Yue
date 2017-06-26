@@ -13,6 +13,7 @@ import Directive from '../directive'
 import * as textParser from '../parse/text'
 import * as dirParser from '../parse/directive'
 import * as _ from '../util'
+import transclude from '../compiler/transclude'
 import config from '../config'
 
 var fragment, currentNodeList = []
@@ -23,10 +24,17 @@ const priorityDirs = [
 ]
 
 export function _compile() {
+  this.$el = transclude(this.$el, this.$options)
+
   this._compileNode(this.$el)
 }
 
 export function _compileElement(node) {
+  // 判断节点是否是组件指令
+  if (this._checkComponentDirs(node)) {
+    return
+  }
+  
   let hasAttributes = node.hasAttributes()
   
   if (hasAttributes && this._checkPriorityDirs(node)) {
@@ -143,5 +151,23 @@ export function _checkPriorityDirs(node) {
       this._bindDirective(dir, value, node)
       return true
     }
+  }
+}
+
+/**
+ * 判断节点是否是组件指令，如<my-component></my-component>
+ * @param {HTML Element} node
+ * @returns {boolean} 
+ */
+export function _checkComponentDirs (node) {
+  let tagName = node.tagName.toLowerCase()
+  if (this.$options.components[tagName]) {
+    let dirs = this._directives
+    dirs.push(
+      new Directive('component', node, this, {
+        expression: tagName
+      })
+    )
+    return true
   }
 }

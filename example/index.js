@@ -4,6 +4,8 @@ var MyComponent = Yue.extend({
   template: '<p>{{message}}</p>'
 })
 
+Yue.component('my-component', MyComponent)
+
 const app = new Yue({
   el: '#app',
   data: {

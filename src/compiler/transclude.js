@@ -6,7 +6,7 @@
  * @param {Element} el
  * @param {Object} options
  */
-export default function (el, options) {
+export default function transclude (el, options) {
   let tpl = options.template
   if (tpl) {
     var parser = new DOMParser()
