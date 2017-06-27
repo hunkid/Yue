@@ -1,6 +1,13 @@
-import {Batcher} from './batcher'
-import {compileGetter} from './parse/expression'
+import {
+  Batcher
+} from './batcher'
+import {
+  compileGetter
+} from './parse/expression'
 import Observer from './observer/observer'
+
+let uid = 0
+let batcher = new Batcher()
 /**
  * Watcher构造函数
  * 1. 当指令对应的数据发生改变的时候, 执行更新DOM的update函数
@@ -12,6 +19,7 @@ import Observer from './observer/observer'
  * @constructor
  */
 function Watcher(vm, expression, cb, ctx) {
+  this.id = ++uid
   this.vm = vm
   this.expression = expression
   this.cb = cb
@@ -70,7 +78,13 @@ Watcher.prototype.addDep = function (path) {
  * 其实就是各自对应的更新方法。比如对应文本节点来说, 就是更新nodeValue的值
  */
 Watcher.prototype.update = function () {
-  batcher.push(this)
+  if (!batcher.isFlushing) {
+    batcher.push(this)
+  } else {
+    setTimeout(() => {
+      batcher.push(this)
+    })
+  }
 }
 
 /**

@@ -13,6 +13,7 @@ import * as scope from './instance/scope'
 import * as element from './instance/element'
 import * as directives from './directives'
 import * as dom from './api/dom'
+import * as compileProps from './compiler/compile-props'
 
 import installGlobalAPI from './global-api'
 
@@ -39,5 +40,6 @@ _.extend(Yue.prototype, dom)
 _.extend(Yue.prototype, bingding)
 _.extend(Yue.prototype, scope)
 _.extend(Yue.prototype, element)
+_.extend(Yue.prototype, compileProps)
 
 installGlobalAPI(Yue)

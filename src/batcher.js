@@ -37,7 +37,10 @@ p.push = function(job) {
     if (!this.waiting) {
       this.waiting = true
       setTimeout(() => {
+        // isFlushing, 此字段用来处理多重异步队列的问题
+        this.isFlushing = true
         this.flush()
+        this.isFlushing = false
       })
     }
   }

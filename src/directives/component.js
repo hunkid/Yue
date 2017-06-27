@@ -23,7 +23,7 @@ export default {
    */
   setComponent (value) {
     if (value) {
-      this.Component = this.vm.$options.components[value]
+      this.Component = this.vm.$options.components[value] // 这里很关键
       this.ComponentName = value
       this.mountComponent()
     }

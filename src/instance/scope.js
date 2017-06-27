@@ -28,7 +28,7 @@ export function _initComputed () {
 }
 
 export function _initMethods () {
-  var methods = this.$options
+  var {methods} = this.$options
   if (methods) {
     for (let key in methods) {
       this[key] = methods[key]
@@ -43,13 +43,8 @@ export function _initProxy () {
 }
 
 export function _initProps () {
-  let isComponent = this.$options.isComponent
-  if (!isComponent) return
-  let el = this.$options.el
-  let attrs = Array.from(el.attributes)
-  attrs.forEach((attr) => {
-    let attrName = attr.name
-    let attrValue = attr.value
-    this.$data[attrName] = attrValue
-  })
+  let {el, props, isComponent} = this.$options
+  if (!isComponent || !props) return
+  let compiledProps = this.compileProps(el, props)
+  this.applyProps(compiledProps)
 }

@@ -37,3 +37,24 @@ export function replace(oldN, newN) {
   parent.insertBefore(newN, oldN)
   parent.removeChild(oldN)
 }
+
+/**
+ * 获取动态数据绑定属性值
+ * @param {HTML ELEMENT} node 
+ * @param {String} name 
+ * @return {String} 属性值
+ */
+export function getBindAttr(node, name) {
+  return getAttr(node, `:${name}`) || getAttr(node, `${config.prefix}bind:${name}`)
+}
+
+/**
+ * 获取节点属性值,并且移除该属性
+ */
+export function getAttr(node, attr) {
+  let val = node.getAttribute(attr)
+  if (val) {
+    node.removeAttribute(attr)
+  }
+  return val
+}

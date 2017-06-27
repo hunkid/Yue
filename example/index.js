@@ -1,7 +1,11 @@
 import Yue from '../src/index'
 
 var MyComponent = Yue.extend({
-  template: '<p>{{message}}</p>'
+  template: '<div>' +
+    '<p>Hello, {{name}}</p>' +
+    '<p>{{message}}</p>' +
+    '</div>',
+  props: ['name', 'message']
 })
 
 Yue.component('my-component', MyComponent)
@@ -9,7 +13,10 @@ Yue.component('my-component', MyComponent)
 const app = new Yue({
   el: '#app',
   data: {
-    message: 'hello'
+    user: {
+      name1: '木易',
+      name2: 'Seant'
+    }
   }
 })
 

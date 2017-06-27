@@ -37,7 +37,8 @@ Directive.prototype._bind = function () {
     this.update && this.update()
   } else {
     this._watcher = new Watcher(
-      this.vm,
+      // this.vm,
+      (this.name === 'prop' ? this.vm.$parent : this.vm),
       this.expression,
       this._update,
       this
