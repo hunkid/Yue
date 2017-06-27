@@ -58,3 +58,13 @@ export function getAttr(node, attr) {
   }
   return val
 }
+
+/**
+ * 事件监听
+ * @param {HTML Element} el 
+ * @param {String} event 
+ * @param {Function} cb 
+ */
+export function on(el, event, cb) {
+  el.addEventListener(event, cb)
+}

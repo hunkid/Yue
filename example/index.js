@@ -1,21 +1,35 @@
 import Yue from '../src/index'
 
-var MyComponent = Yue.extend({
-  template: '<div>' +
-    '<p>Hello, {{name}}</p>' +
-    '<p>{{message}}</p>' +
-    '</div>',
-  props: ['name', 'message']
-})
-
-Yue.component('my-component', MyComponent)
 
 const app = new Yue({
   el: '#app',
   data: {
     user: {
-      name1: '木易',
-      name2: 'Seant'
+      name: 'Seant',
+      age: 26
+    },
+    show: true,
+    list: {
+      items: [{
+        title: 'aaa'
+      },
+      {
+        title: 'bbb'
+      },
+      {
+        title: 'ccc'
+      }
+      ]
+    }
+  },
+  computed: {
+    info: function() {
+      return `计算出来属性->姓名：${this.user.name}`
+    }
+  },
+  methods: {
+    submit: function() {
+      console.log('提交')
     }
   }
 })

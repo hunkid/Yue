@@ -2,6 +2,7 @@ import * as _ from '../util'
 
 import * as text from './text'
 import * as attr from './attr'
+import * as model from './model'
 
 import * as yif from './if'
 import * as repeat from './repeat'
@@ -11,6 +12,7 @@ import * as prop from './prop'
 var directives = {
   text,
   attr,
+  model,
   if: {},
   on: {},
   repeat: {},
