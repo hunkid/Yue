@@ -9,6 +9,10 @@
 export default function transclude (el, options) {
   let tpl = options.template
   if (tpl) {
+    let ret = document.querySelector(options.template)
+    if (ret) {
+      return ret.content.children[0] // 这里是取<template></template>以内的东西
+    }
     var parser = new DOMParser()
     var doc = parser.parseFromString(tpl, 'text/html')
     // 此处生成的doc是一个fragment, 不能直接返回处理

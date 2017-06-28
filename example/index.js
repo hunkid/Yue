@@ -1,38 +1,85 @@
 import Yue from '../src/index'
 
+var child = Yue.extend({
+  template: '#child-template',
+  data: {
+    name: '',
+    age: ''
+  },
+  methods: {
+    dispatchName: function () {
+      this.$dispatch('child-name', this.name)
+    },
+    broadcastName: function () {
+      this.$broadcast('parent-name', this.name)
+    }
+  },
+  events: {
+    'child-name': function (name) {
+      this.name = name
+      return true
+    },
+    'child-age': function (age) {
+      this.age = age
+    },
+    'parent-name': function (name) {
+      this.name = name
+      return true
+    },
+    'parent-age': function (age) {
+      this.age = age
+    }
+  }
+})
+
+Yue.component('child', child)
+
+var recursiveChild = Yue.extend({
+  template: '#recursive-child-template',
+  data: {
+    name: '',
+    age: ''
+  },
+  methods: {
+    dispatchName: function () {
+      this.$dispatch('child-name', this.name)
+    },
+    dispatchAge: function () {
+      this.$dispatch('child-age', this.age)
+    }
+  },
+  events: {
+    'parent-name': function (name) {
+      this.name = name
+    },
+    'parent-age': function (age) {
+      this.age = age
+    }
+  }
+})
+
+Yue.component('recursive-child', recursiveChild)
 
 const app = new Yue({
   el: '#app',
   data: {
-    user: {
-      name: 'Seant',
-      age: 26
-    },
-    message: {
-      name: ''
-    },
-    show: true,
-    list: {
-      items: [{
-        title: 'aaa'
-      },
-      {
-        title: 'bbb'
-      },
-      {
-        title: 'ccc'
-      }
-      ]
-    }
+    name: '',
+    age: ''
   },
-  computed: {
-    info: function() {
-      return `计算出来属性->姓名：${this.user.name}`
+  events: {
+    'child-name': function (name) {
+      this.name = name
+    },
+    'child-age': function (age) {
+      this.age = age
     }
   },
   methods: {
-    submit: function() {
-      console.log('提交')
+    broadcastName: function () {
+      this.$broadcast('parent-name', this.name)
+    },
+    broadcastAge: function () {
+      this.$broadcast('parent-age', this.age)
     }
   }
 })

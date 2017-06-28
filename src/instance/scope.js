@@ -31,7 +31,7 @@ export function _initMethods () {
   var {methods} = this.$options
   if (methods) {
     for (let key in methods) {
-      this[key] = methods[key]
+      this[key] = () => methods[key].apply(this, arguments)
     }
   }
 }

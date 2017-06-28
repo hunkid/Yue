@@ -4,22 +4,70 @@
     <meta charset="UTF-8">
     <title>测试Yue</title>
 </head>
+<style>
+    #app,
+    #child,
+    #recursive-child {
+        border: 1px solid #999;
+        margin: 10px;
+        padding: 5px;
+    }
+
+    #child {
+        border-color: #3a33d1;
+    }
+
+    #recursive-child {
+        border-color: #f0ad4e;
+    }
+</style>
 <body>
 <div id="app">
-    <p data-name="{{user.name}}">姓名:{{user.name}}</p>
-    <p>年龄:{{user.age}}</p>
-    <p class="{{user.name}}">{{info}}</p>
-    <button y-on="click:submit">提交</button>
-    <div y-if="show">
-        <p>如果show为真,我们就显示{{user.name}}</p>
-        <p>如果show为真,我们就显示{{user.age}}</p>
+    <p>最顶层的实例</p>
+    <p>姓名: {{name}}</p>
+    <p>年龄: {{age}}</p>
+    <div>
+        <input type="text" y-model="name">
+        <button y-on="click:broadcastName">向下广播姓名</button>
     </div>
-    <ul>
-        <li y-repeat="item:list.items">{{item.title}}</li>
-    </ul>
-    <input type="text" y-model="message.name" placeholder="edit me...">
-    <p>Message's name is: {{message.name}}</p>
+    <div>
+        <input type="text" y-model="age">
+        <button y-on="click:broadcastAge">向下传播年龄</button>
+    </div>
+
+    <child></child>
 </div>
+
+<template id="child-template">
+    <div id="child">
+        <p>第二层的子组件</p>
+        <p>姓名: {{name}}</p>
+        <p>年龄: {{age}}</p>
+        <div>
+            <input type="text" y-model="name">
+            <button y-on="click:dispatchName">向上派发姓名</button>
+            <button y-on="click:broadcastName">向下广播姓名</button>
+        </div>
+
+        <recursive-child></recursive-child>
+    </div>
+</template>
+
+<template id="recursive-child-template">
+    <div id="recursive-child">
+        <p>最三层的子组件</p>
+        <p>姓名: {{name}}</p>
+        <p>年龄: {{age}}</p>
+        <div>
+            <input type="text" y-model="name">
+            <button y-on="click:dispatchName">向上派发姓名</button>
+        </div>
+        <div>
+            <input type="text" y-model="age">
+            <button y-on="click:dispatchAge">向上派发年龄</button>
+        </div>
+    </div>
+</template>
 
 <script src="./example.js"></script>
 </body>

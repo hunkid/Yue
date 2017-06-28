@@ -16,6 +16,7 @@ export function _init(options) {
 
   this.$children = []
 
+  this._events = {}
   // _.extend(this.$options, this.constructor.options)
 
   // if (this.$parent) {
@@ -50,6 +51,8 @@ export function _init(options) {
   this._initComputed() // 初始化计算属性
 
   this._initProxy() // 初始化数据代理
+
+  this._initEvents()
 
   this._initMethods() // 初始化方法
 
