@@ -1,9 +1,4 @@
-export function update () {
-  let properties = this.expression.split('.')
-  let value = this.vm.$data
-  properties.forEach((property) => {
-    value = value[property]
-  })
+export function update (value) {
   this.tDom['nodeValue'] = value
   console.log(`更新了DOM-${this.expression}`, value)
 }

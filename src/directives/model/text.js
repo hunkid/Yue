@@ -11,7 +11,7 @@ export default {
     }
     _.on(el, 'input', this.handler)
   },
-  update() {
+  update(value) {
     this.tDom.value = value
   }
 }

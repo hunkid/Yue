@@ -13,7 +13,7 @@ const handlers = {
 _.extend(handlers.text, text.default)
 
 export function bind() {
-  let el = this.el
+  let el = this.tDom
   let tag = el.tagName
   let handler
   if (tag === 'INPUT') {

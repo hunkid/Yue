@@ -8,6 +8,9 @@ const app = new Yue({
       name: 'Seant',
       age: 26
     },
+    message: {
+      name: ''
+    },
     show: true,
     list: {
       items: [{
